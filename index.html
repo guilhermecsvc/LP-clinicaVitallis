@@ -674,7 +674,7 @@ footer .brand-text b{color:#fff}
           <li>Medos, inseguranças ou dificuldade de lidar com emoções</li>
           <li>Dúvidas sobre o desenvolvimento, indicadas pela escola ou pelo pediatra</li>
         </ul>
-        <a class="btn btn-primary" href="#" data-wa="Olá! Gostaria de agendar um atendimento para meu filho(a), que é criança." data-track="publico_criancas">Agendar para meu filho(a)</a>
+        <a class="btn btn-primary" href="#agendar" data-prefill-paciente="p2" data-track="publico_criancas">Agendar para meu filho(a)</a>
       </div>
       <div class="panel-visual pv-play"><svg class="play-scene" viewBox="0 0 400 250" role="img" aria-label="Ilustração animada: formas geométricas coloridas encaixando em um tabuleiro de brinquedo">
           <defs>
@@ -710,7 +710,7 @@ footer .brand-text b{color:#fff}
           <li>Conflitos com amigos, família ou com a própria imagem</li>
           <li>Uso excessivo de telas ou mudanças bruscas de rotina</li>
         </ul>
-        <a class="btn btn-primary" href="#" data-wa="Olá! Gostaria de agendar um atendimento para meu filho(a), que é adolescente." data-track="publico_adolescentes">Agendar para adolescente</a>
+        <a class="btn btn-primary" href="#agendar" data-prefill-paciente="p3" data-track="publico_adolescentes">Agendar para adolescente</a>
       </div>
       <div class="panel-visual pv-play"><svg class="play-scene" viewBox="0 0 400 250" role="img" aria-label="Ilustração animada: dois balões de conversa, um digitando e outro respondendo com um coração">
           <g class="pl-dots" fill="#dcc38a"><circle cx="30" cy="30" r="2.5"/><circle cx="370" cy="40" r="3"/><circle cx="350" cy="220" r="2"/><circle cx="24" cy="200" r="2"/></g>
@@ -737,7 +737,7 @@ footer .brand-text b{color:#fff}
           <li>Dificuldades de memória, concentração ou organização</li>
           <li>Momentos de mudança: luto, separação, carreira, maternidade/paternidade</li>
         </ul>
-        <a class="btn btn-primary" href="#" data-wa="Olá! Gostaria de agendar um atendimento para mim." data-track="publico_adultos">Agendar para mim</a>
+        <a class="btn btn-primary" href="#agendar" data-prefill-paciente="p1" data-track="publico_adultos">Agendar para mim</a>
       </div>
       <div class="panel-visual pv-play"><svg class="play-scene" viewBox="0 0 400 250" role="img" aria-label="Ilustração animada: uma bolinha subindo degraus, um de cada vez, até um broto que cresce no topo">
           <g class="pl-dots" fill="#dcc38a"><circle cx="40" cy="40" r="2.5"/><circle cx="90" cy="90" r="2"/><circle cx="200" cy="30" r="3"/><circle cx="370" cy="150" r="2"/></g>
@@ -762,7 +762,7 @@ footer .brand-text b{color:#fff}
           <li>Necessidade de alinhar combinados e limites</li>
           <li>Busca por orientação após uma avaliação ou diagnóstico</li>
         </ul>
-        <a class="btn btn-primary" href="#" data-wa="Olá! Gostaria de saber mais sobre orientação parental e atendimento para a família." data-track="publico_familias">Falar sobre orientação parental</a>
+        <a class="btn btn-primary" href="#agendar" data-prefill-servico="Orientação parental" data-track="publico_familias">Falar sobre orientação parental</a>
       </div>
       <div class="panel-visual pv-play"><svg class="play-scene" viewBox="0 0 400 250" role="img" aria-label="Ilustração animada: pontos representando membros da família se conectam e formam um coração">
           <g class="pl-dots" fill="#dcc38a"><circle cx="40" cy="40" r="2.5"/><circle cx="360" cy="40" r="2.5"/><circle cx="60" cy="210" r="2"/><circle cx="345" cy="200" r="2"/></g>
@@ -1184,6 +1184,20 @@ footer .brand-text b{color:#fff}
   // Avança automaticamente ao escolher na etapa 1
   form.querySelectorAll('[name="paciente"]').forEach(function (r) {
     r.addEventListener("change", function () { setTimeout(function () { if (current === 1) show(2); }, 250); });
+  });
+  // Botões da seção "Para quem": levam ao formulário já com a resposta da aba marcada
+  document.querySelectorAll("[data-prefill-paciente], [data-prefill-servico]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      const pid = btn.dataset.prefillPaciente;
+      const serv = btn.dataset.prefillServico;
+      if (serv) document.getElementById("servico").value = serv;
+      if (pid) {
+        document.getElementById(pid).checked = true;
+        show(2); // pula a pergunta "para quem" já respondida
+      } else {
+        show(1);
+      }
+    });
   });
   form.addEventListener("submit", function (e) {
     e.preventDefault();
